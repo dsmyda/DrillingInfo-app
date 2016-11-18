@@ -61,6 +61,7 @@ def json_gen(f):
             json_byte_array += byte
         if byte == b'}':
             cnt -= 1
+            
         if cnt == 0 and json_byte_array:
             yield json.loads(json_byte_array.decode())
             json_byte_array = bytearray()
@@ -115,12 +116,11 @@ def update(cnt, size, progress):
     """ Simply update the cnt variable and have that reflect in the progress object of the calling thread. """
 
     cnt += 1
-
     if size:
         progress.update(cnt / size)
     else:
         progress.update(cnt)
-
+        
     return cnt
 
 
