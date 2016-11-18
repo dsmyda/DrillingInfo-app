@@ -13,8 +13,7 @@ from csv import DictWriter
 
 def retrieve(thread, request_url, api_key, type, state, progress, ps, pn):
     """ This function calls the DrillingInfo API and stores the result to disk. """
-
-    #Log any issues during run time to log file
+    
     handler = logging.FileHandler("{}{}.log".format(state, type))
     handler.setFormatter(logging.Formatter("%(asctime)s;%(levelname)s;%(message)s",
                              "%Y-%m-%d %H:%M:%S"))
@@ -23,31 +22,27 @@ def retrieve(thread, request_url, api_key, type, state, progress, ps, pn):
     log.setLevel(logging.CRITICAL)
 
     file_path = state + type + ".json"
-    header_file_obj = None
-
-    #In order to process prodm calls, there must be an equivalent prodh file to read entity_ids from. Here we attempt
-    #to retrieve such a file and report to our log file if no such file is found.
+    header_f = None
+    
     if type == "prodm":
         try:
-            header_file_obj = open(state + "prodh.json", 'rb')
+            header_f = open(state + "prodh.json", 'rb')
         except FileNotFoundError:
             log.critical("type: %s specified, but unable to locate production header file as \"%sprodh.json\"\n"
                         "Please move the file into the current directory." % (type, state))
             return
 
-    #If we do not have a header_file_obj, all we need is the state in order to process our file. If we do have one, then
-    #we must loop through each entity gathering results from the API call.
     with open(file_path, 'a') as f:  # 'a' flag to append to created file, or to create if it does not already exist
-        if header_file_obj:
-            size = estimate_requests_num(header_file_obj)   #estimate our file size before processing
-            header_file_obj.seek(0)     #reset file obj
-            for obj in json_gen(header_file_obj):
+        if header_f:
+            size = estimate_requests_num(header_f)   #estimate our file size before processing
+            header_f.seek(0)     #reset file obj
+            for obj in json_gen(header_f):
                 id = obj["entity_id"]
                 process(thread, f, request_url, api_key, id, progress, ps, pn, log, size)
                 #Check to see if user wishes to kill thread
                 if thread.getTerminationFlag:
                     break
-            header_file_obj.close()
+            header_f.close()
         else:
             process(thread, f, request_url, api_key, state, progress, ps, pn, log)
 
