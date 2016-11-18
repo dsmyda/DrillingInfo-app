@@ -71,21 +71,18 @@ def json_gen(f):
 
 def estimate_requests_num(h):
     """ Estimate the number of requests that will need to be done on prodm retrievals. Optimized as much as
-    possible with buffer read strategy.
+    possible with buffer read strategy. """
 
-    :return: line count = request count
-    """
-
-    lines = 0
+    requests = 0
     buffer_size = 1024 * 1024
     read_h = h.read
 
     buffer = read_h(buffer_size)
     while buffer:
-        lines += buffer.count(b'{')
+        requests += buffer.count(b'{')
         buffer = read_h(buffer_size)
 
-    return lines
+    return requests
 
 
 def process(thread, f, request_url, api_key, var, progress, ps, pn, log, size=None):
