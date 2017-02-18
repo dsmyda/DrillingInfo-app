@@ -34,15 +34,3 @@ class Convert:
                 next(second) #Remove second header
                 for row in second:
                     new.write(row)
-
-if __name__ == "__main__":
-    import os
-    convert = Convert()
-    old = [file for file in os.listdir("/home/dsmyda/PycharmProjects") if file.endswith(".csv")]
-    new = [file for file in os.listdir("/home/dsmyda/PycharmProjects/Permits1") if file in old]
-    new.sort()
-    old.sort()
-    #for file in zip(old,new):
-    convert.concat_csv("/home/dsmyda/PycharmProjects/tmp/NewMexicoperm.csv", "/home/dsmyda/PycharmProjects/CLI/NewMexicoperm.csv", '/home/dsmyda/PycharmProjects/tmp1/NewMexioperm.csv')
-        #convert.to_csv("/home/dsmyda/PycharmProjects/Permits/"+file[0], "/home/dsmyda/PycharmProjects/Permits1/"+file[1][:file[1].index(".")] + ".csv")
-    #convert.to_csv("/home/dsmyda/PycharmProjects/CLI/New Mexicoperm.json", "/home/dsmyda/PycharmProjects/CLI/NewMexicoperm.csv")
