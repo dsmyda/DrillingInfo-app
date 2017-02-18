@@ -1,6 +1,4 @@
-# CLI-for-DI-API
-A CLI to interact with the DrillingInfo API
+# DrillingInfo Application
+A desktop application to interact with the DrillingInfo API
 
-README UNDER CONSTRUCTION
-
-Run cli-main.py
+README and App in progress.
