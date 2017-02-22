@@ -1,0 +1,56 @@
+2017-02-11 19:17:01;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 35, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=Texas&format=json&page=5931&pagesize=100
+2017-02-12 17:32:24;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=Florida&format=json&page=5&pagesize=100
+2017-02-12 17:33:28;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=Colorado&format=json&page=140&pagesize=100
+2017-02-12 17:34:20;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=Kansas&format=json&page=61&pagesize=100
+2017-02-12 17:34:36;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=Kentucky&format=json&page=24&pagesize=100
+2017-02-12 19:17:01;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=Wyoming&format=json&page=1812&pagesize=100
+2017-02-13 02:10:05;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=New%20Mexico&format=json&page=210&pagesize=100
+2017-02-13 12:35:05;ERROR;message
+Traceback (most recent call last):
+  File "/home/dsmyda/PycharmProjects/CLI/worker.py", line 18, in run_wrapper
+    run(self)
+  File "/home/dsmyda/PycharmProjects/CLI/state_worker.py", line 36, in run
+    if (response.status_code != 200): raise LookupError(response.url)
+LookupError: https://di-api.drillinginfo.com/v1/direct-access/permits?state_province=New%20Mexico&format=json&page=426&pagesize=100

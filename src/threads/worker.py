@@ -4,9 +4,12 @@
 @date: 11-17-16
 
 """
+from write_buffer import FileBuffer
+
 import threading
 import json
-from write_buffer import FileBuffer
+import os
+import csv
 import master
 
 #DECORATOR
@@ -44,10 +47,14 @@ class Worker(threading.Thread):
     def run(self):
         pass
 
-    def commit_results(self, response_json):
-        for obj in response_json:
-            self.buffer.add(json.dumps(obj))
-            self.completed()
+    def commit_results(self, response, format):
+        if format == "json":
+            for obj in response:
+                self.buffer.add(json.dumps(obj))
+                self.completed()
+        elif format == "csv":
+            for obj in response:
+                self.buffer.add()
 
     def completed(self):
         self.cnt += 1.0
@@ -76,5 +83,7 @@ class Worker(threading.Thread):
         return "Unknown Worker"
 
     def path_delimiter(self):
-        import os
         return os.sep
+
+    def file_ext(self):
+        return ".json"

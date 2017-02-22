@@ -96,15 +96,10 @@ class MainWindow(QMainWindow):
             self.statusTable.setItem(rowPosition, x, self.check_text())
 
         self.statusTable.item(rowPosition, 0).setText(str(pid))
-        #self.statusTable.item(rowPosition, 0).clicked.connect(self.activityDropDown)
         self.statusTable.item(rowPosition, master.get_status(str(pid))).setText(CHECK_MARK)
 
         self.findChild(QLineEdit, "save_lineEdit").clear()
         self.findChild(QLineEdit, "prodm_lineEdit").clear()
-
-
-    def activityDropDown(self):
-        pass
 
     def refresh(self):
         for pos in range(0, self.statusTable.rowCount()):
