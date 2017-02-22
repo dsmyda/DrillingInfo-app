@@ -4,24 +4,25 @@
 @date: 11-17-16
 
 """
-from write_buffer import FileBuffer
+from write_buffers import JSONBuffer, CSVBuffer
 
 import threading
 import json
 import os
-import csv
 import master
 
-#DECORATOR
+#Decorator for the threads run method
 def process(run):
     def run_wrapper(self):
         try:
-            self.buffer.force_add("[")
+            if self.format == "JSON":
+                self.buffer.force_add("[")
             run(self)
         except LookupError as e:
             master.log.exception("message")
         finally:
-            self.buffer.force_add("]")
+            if self.format == "JSON":
+                self.buffer.force_add("]")
             self.buffer.close()
             master.remove_active(self)
 
@@ -34,27 +35,28 @@ class Worker(threading.Thread):
     Subclasses are responsible for maintaining progress information
     and naming features. """
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, format):
         threading.Thread.__init__(self)
 
+        self.format = format
         self.suspended = False
         self.pause_condition = threading.Condition(threading.Lock())
 
         self.cnt = 0.0
-        self.buffer = FileBuffer(file_path)
+
+        if self.is_csv():
+            self.buffer = CSVBuffer(file_path)
+        else:
+            self.buffer = JSONBuffer(file_path)
 
     @process
     def run(self):
         pass
 
-    def commit_results(self, response, format):
-        if format == "json":
-            for obj in response:
-                self.buffer.add(json.dumps(obj))
-                self.completed()
-        elif format == "csv":
-            for obj in response:
-                self.buffer.add()
+    def commit_results(self, response):
+        for obj in response:
+            self.buffer.add(obj)
+            self.completed()
 
     def completed(self):
         self.cnt += 1.0
@@ -85,5 +87,8 @@ class Worker(threading.Thread):
     def path_delimiter(self):
         return os.sep
 
-    def file_ext(self):
-        return ".json"
+    def is_json(self):
+        return self.format == "JSON"
+
+    def is_csv(self):
+        return self.format == "CSV"

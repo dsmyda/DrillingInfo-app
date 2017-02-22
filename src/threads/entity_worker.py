@@ -4,9 +4,7 @@
 @date: 11-17-16
 
 """
-import threading
 import requests
-import json
 import worker as w
 
 class Entity(w.Worker):
@@ -16,8 +14,8 @@ class Entity(w.Worker):
     Subclasses are responsible for maintaining progress information
     and naming features. """
 
-    def __init__(self, destination_url, start_page, page_size, api_key, in_fp, out_fp):
-        threading.Thread.__init__(self)
+    def __init__(self, destination_url, start_page, page_size, api_key, format, in_fp, out_fp):
+        super().__init__(out_fp, format)
 
         self.destination_url = destination_url
         self.api_key = api_key
@@ -29,7 +27,13 @@ class Entity(w.Worker):
 
     @w.process
     def run(self):
-        for e_id in self.entities():
+
+        #TODO: MapReduce framework
+        #partition
+        #spawn threads for each partition
+        #write results to file using same buffer
+
+        for e_id in self.get_key_set():
             self.suspend_here()
 
             response = requests.get(self.destination_url.format(e_id, self.start_page, self.page_size),
@@ -41,17 +45,6 @@ class Entity(w.Worker):
             self.commit_results(response_json)
 
             self.start_page += 1
-
-    def entities(self):
-        with open(self.in_file, 'rb') as f:
-            arr = bytearray()
-            byte = f.read(1)
-
-            while byte:
-                if byte == b"}":
-                    yield json.loads(arr.decode())
-                    arr.clear()
-                byte = f.read(1)
 
     def estimate_requests_num(self):
         with open(self.in_file, 'rb') as f:
@@ -65,6 +58,19 @@ class Entity(w.Worker):
                 buffer = read_h(buffer_size)
 
             return requests
+
+    def map(self, key_set):
+        pass
+
+    def reduce(self):
+        pass
+
+    def get_key_set(self):
+        #TODO get all entity id's from file
+        return []
+
+    def partition(self):
+        pass
 
     def __repr__(self):
         return "Entity Worker"

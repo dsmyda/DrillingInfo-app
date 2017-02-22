@@ -5,6 +5,7 @@ import logging
 
 MAX_RUNNING = 2
 
+#q is inherently thread-safe
 q = Queue()
 active = set()
 completed = set()
@@ -24,7 +25,6 @@ def send(worker):
             active.add(q.get())
 
 def remove_active(worker):
-    """ """
 
     if worker not in active: return
 
@@ -49,6 +49,11 @@ def resume(worker_name):
             worker.resume()
 
 def get_status(worker_name):
+
+    #1 = active
+    #2 = queued
+    #3 = paused
+    #4 = completed
 
     if worker_name in completed:
         return 4

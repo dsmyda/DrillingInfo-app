@@ -30,6 +30,11 @@ class MainWindow(QMainWindow):
             .connect(lambda: self.saveDir("save_lineEdit"))
         self.findChild(QPushButton, "download_button").clicked\
             .connect(self.download)
+
+        #Initializations
+        self.findChild(QComboBox, "state_comboBox").addItems([item.value for item in abbrev])
+        self.findChild(QComboBox, "type_comboBox").addItems\
+            (["Permits", "Production Headers", "Production Monthly"])
         # ===================================================================
 
         #================= Convert tab signals ==============================
@@ -46,9 +51,6 @@ class MainWindow(QMainWindow):
             .connect(self.refresh)
         self.statusTable = self.findChild(QTableWidget, "statusTable")
         #====================================================================
-
-        self.findChild(QComboBox, "state_comboBox").addItems([item.value for item in abbrev])
-        self.findChild(QComboBox, "type_comboBox").addItems(["Permits", "Production Headers", "Production Monthly"])
 
         self.statusBar().showMessage('Ready.')
 
@@ -75,8 +77,7 @@ class MainWindow(QMainWindow):
         """ Upon download button press, retrieve the text from
         the fields and pass them to the worker factory. """
 
-        #TODO: clean up code
-
+        # ================ Gather necessary fields ==============================
         save_fp = self.findChild(QLineEdit, "save_lineEdit").text()
         prodm_fp = self.findChild(QLineEdit, "prodm_lineEdit").text()
         api_key =self.findChild(QLineEdit, "api_lineEdit").text()
@@ -84,10 +85,13 @@ class MainWindow(QMainWindow):
         start_page = int(self.findChild(QLineEdit, "startpage_lineEdit").text())
         page_size = int(self.findChild(QLineEdit, "pagesize_lineEdit").text())
         state = self.findChild(QComboBox, "state_comboBox").currentText()
+        format = self.findChild(QComboBox, "format_comboBox_dl").currentText()
+        # =======================================================================
 
-        pid = worker_factory.get_instance(type, state, api_key, start_page, page_size, save_fp, prodm_fp)
+        pid = worker_factory.get_instance(type, state, api_key, start_page, page_size, format, save_fp, prodm_fp)
         master.send(pid)
 
+        # ================ Update table and reset ==============================
         rowPosition = self.statusTable.rowCount()
         self.statusTable.insertRow(rowPosition)
 
@@ -98,8 +102,9 @@ class MainWindow(QMainWindow):
         self.statusTable.item(rowPosition, 0).setText(str(pid))
         self.statusTable.item(rowPosition, master.get_status(str(pid))).setText(CHECK_MARK)
 
-        self.findChild(QLineEdit, "save_lineEdit").clear()
         self.findChild(QLineEdit, "prodm_lineEdit").clear()
+        # ======================================================================
+
 
     def refresh(self):
         for pos in range(0, self.statusTable.rowCount()):

@@ -17,10 +17,10 @@ TYPE_MAPPING = {
     'Production Monthly': 'https://di-api.drillinginfo.com/v1/direct-access/producing-entities-details?entity_id={}&format=json&page={}&pagesize={}'
 }
 
-def get_instance(type, state, api_key, start_page, page_size, save_fp, input_file):
+def get_instance(type, state, api_key, start_page, page_size, format, save_fp, input_file):
     if type == 'Permits':
-        return PermWorker(TYPE_MAPPING[type], state, start_page, page_size, api_key, save_fp)
+        return PermWorker(TYPE_MAPPING[type], state, start_page, page_size, api_key, format, save_fp)
     elif type == 'Production Headers':
-        return ProdhWorker(TYPE_MAPPING[type], abbrev(state).name, start_page, page_size, api_key, save_fp)
+        return ProdhWorker(TYPE_MAPPING[type], abbrev(state).name, start_page, page_size, api_key, format, save_fp)
     elif type == 'Production Monthly':
-        return ProdmWorker(TYPE_MAPPING[type], start_page, page_size, api_key, input_file, save_fp)
+        return ProdmWorker(TYPE_MAPPING[type], start_page, page_size, api_key, format, input_file, save_fp)

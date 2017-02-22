@@ -5,7 +5,6 @@
 
 """
 import requests
-import time
 import worker as w
 
 class State(w.Worker):
@@ -16,12 +15,11 @@ class State(w.Worker):
     and naming features. """
 
     def __init__(self, destination_url, state, start_page, page_size, api_key, format, out_fp):
-        super().__init__(out_fp)
+        super().__init__(out_fp, format)
 
         self.destination_url = destination_url
         self.api_key = api_key
 
-        self.format = format
         self.start_page = start_page
         self.page_size = page_size
         self.state = state
@@ -37,7 +35,7 @@ class State(w.Worker):
             if (response.status_code != 200): raise LookupError(response.url)
             response_json = response.json()
             if not response_json: break
-            self.commit_results(response_json, self.format)
+            self.commit_results(response_json)
 
             self.start_page += 1
 
